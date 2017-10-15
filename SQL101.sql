@@ -126,6 +126,29 @@ SELECT COUNT(*)
 FROM films
 WHERE language IS NULL;
 
+/*LIKE and NOT LIKE*/
+
+/*Get the names of all people whose names begin with 'B'*/
+SELECT name 
+FROM people
+WHERE name LIKE 'B%';
+
+/*Get the names of people whose names have 'r' as the second letter*/
+SELECT name 
+FROM people
+WHERE name LIKE '_r%';
+
+/*Get the names of people whose names don't start with A*/
+SELECT name 
+FROM people
+WHERE name NOT LIKE 'A%'
+
+
+
+
+
+
+
 
 
 
