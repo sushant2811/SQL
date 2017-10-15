@@ -276,7 +276,9 @@ calculate some kind of value about the
 entire group -- see the second example below. */
 
 /* GROUP BY always goes after the FROM clause, but not necessary immediately 
-after. The WHERE clause takes the precedence.  GROUP BY can be combined with 
+after. The WHERE clause takes the precedence. Probably using HAVING is a better way 
+to do things */
+/* GROUP BY can be combined with 
 ORDER BY. ORDER BY always goes after GROUP BY */
 
 /* Get the release year and count of films released in each year */
@@ -307,6 +309,39 @@ SELECT release_year, country, MAX(budget)
 FROM films
 GROUP BY release_year, country
 ORDER BY release_year, country;
+
+/********************  HAVING  *******************/
+
+
+/*
+
+n SQL, aggregate functions can't be used in WHERE clauses. 
+For example, the following query is invalid
+SELECT release_year
+FROM films
+GROUP BY release_year
+WHERE COUNT(title) > 10;
+
+The correct way to do this is using the HAVING clause
+SELECT release_year
+FROM films
+GROUP BY release_year
+HAVING COUNT(title) > 10;
+shows only those years in which more than 10 films were released.
+
+
+*/
+
+/* In how many different years were more than 200 movies released */
+SELECT release_year
+FROM films
+GROUP BY release_year
+HAVING COUNT(title) > 200
+/* Count the number of rows in the above query */
+
+
+
+
 
 
 
