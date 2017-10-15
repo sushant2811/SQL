@@ -179,6 +179,17 @@ SELECT MAX(gross)
 FROM films
 WHERE release_year BETWEEN 2000 AND 2012;
 
+/* AS aliasing */
+
+/* Get the title and net profit (the amount a film grossed, minus its budget) 
+for all films. Alias the net profit as net_profit */
+SELECT title, gross - budget AS net_profit
+FROM films;
+
+/* Get the title and duration in hours for all films */
+SELECT title, duration / 60.0 AS duration_hours
+FROM films;
+
 
 
 
