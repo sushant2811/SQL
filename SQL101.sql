@@ -76,6 +76,18 @@ WHERE language = 'Spanish'
 AND release_year > 2000 
 AND release_year < 2010;
 
+/*get the title and release year of films released in the 90s which were in 
+French or Spanish and which took in more than $2M gross.*/
+
+SELECT title, release_year 
+FROM films
+WHERE (release_year >= 1990 AND release_year < 2000)
+AND (language = 'French' OR language = 'Spanish')
+AND gross > 2000000;
+
+/*Build queries one step at a time*/
+
+
 
 
 
