@@ -98,6 +98,28 @@ WHERE release_year BETWEEN 1990 AND 2000
 AND budget > 100000000
 AND (language = 'Spanish' OR language = 'French')
 
+/*IN operator*/
+
+/*Get the title and release year of all films released in 1990 or released 
+in 2000 that were longer than two hours*/
+
+SELECT title, release_year
+FROM films
+WHERE release_year IN (1990, 2000)
+AND duration > 120
+
+/*Get the title and language of all films which were in English, 
+Spanish, or French*/
+SELECT title, language
+FROM films
+WHERE language IN ('English', 'Spanish', 'French');
+
+
+
+
+
+
+
 
 
 
