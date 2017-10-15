@@ -190,6 +190,19 @@ FROM films;
 SELECT title, duration / 60.0 AS duration_hours
 FROM films;
 
+/* Get the percentage of people who are no longer alive. 
+Alias the result as percentage_dead */
+
+SELECT (COUNT(deathdate) * 100.0 / COUNT(*))   AS percentage_dead
+FROM people;
+
+/* Looks like COUNT counts only the non-null values */
+
+/* Get the number of decades the films table covers. 
+Alias the result as number_of_decades */
+
+SELECT (MAX(release_year) - MIN(release_year)) / 10.0 AS number_of_decades
+FROM films;
 
 
 
