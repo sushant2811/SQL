@@ -1,3 +1,5 @@
+/*Reference: Intro to SQL for Data Science course on DataCamp*/
+
 /* Selecting one and more fields from a table */
 
 SELECT title FROM films;
@@ -29,4 +31,21 @@ SELECT COUNT(DISTINCT birthdate) FROM people;
 
 /*Count the number of unique languages in the films table*/
 SELECT COUNT(DISTINCT language) FROM films;
+
+
+/***********  Filtering results  ***************************/
+
+/*Get all details of films released in 2016*/
+SELECT * FROM films WHERE release_year = 2016;
+
+/*Number of films released before 2000*/
+SELECT COUNT(*) FROM films WHERE release_year < 2000;
+
+/*Get the title and release year of films released after 2000*/
+SELECT title, release_year FROM films WHERE release_year > 2000;
+
+/*Note: where always comes immediately after the table name*/
+
+
+
 
