@@ -114,6 +114,21 @@ SELECT title, language
 FROM films
 WHERE language IN ('English', 'Spanish', 'French');
 
+/*NULL and IS NULL*/
+
+/*Get the names of people who are still alive, i.e. whose death date is missing*/
+SELECT name 
+FROM people
+WHERE deathdate IS NULL;
+
+/*Get the number of films which don't have a language associated with them*/
+SELECT COUNT(*)
+FROM films
+WHERE language IS NULL;
+
+
+
+
 
 
 
