@@ -250,7 +250,24 @@ ORDER BY films DESC;
 to shortest */
 SELECT title, duration
 FROM films
-ORDER BY duration DESC
+ORDER BY duration DESC;
+
+/* Sorting over two columns -- sorts by the first column specified, 
+then sort by the next, then the next, and so on. The order of columns is important */
+
+/* Get the birth date and name of people in the people table, 
+in order of when they were born and alphabetically by name */
+SELECT birthdate, name 
+FROM people
+ORDER BY birthdate, name;
+
+/* Get the release year, duration, and title of films ordered by their 
+release year and duration */
+SELECT release_year, duration, title
+FROM films
+ORDER BY release_year, duration;
+
+
 
 
 
