@@ -268,6 +268,37 @@ FROM films
 ORDER BY release_year, duration;
 
 
+/******** GROUP BY *****************/
+
+/* SQL will return an error if you try to SELECT a field that is not in your 
+GROUP BY clause without using it (the field that is not in GROUP BY) to 
+calculate some kind of value about the 
+entire group -- see the second example below. */
+
+/* GROUP BY always goes after the FROM clause, but not necessary immediately 
+after. The WHERE clause takes the precedence.  GROUP BY can be combined with 
+ORDER BY. ORDER BY always goes after GROUP BY */
+
+/* Get the release year and count of films released in each year */
+SELECT release_year, COUNT(*)
+FROM films
+GROUP BY release_year;
+
+/* Get the release year and average duration of all films, grouped by release 
+year */
+SELECT release_year, AVG(duration)
+FROM films
+GROUP BY release_year;
+
+/* Get the IMDB score and count of film reviews grouped by IMDB score in the 
+reviews table */
+SELECT imdb_score, COUNT(*)
+FROM reviews
+GROUP BY imdb_score
+
+
+
+
 
 
 
