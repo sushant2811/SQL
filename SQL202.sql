@@ -52,3 +52,26 @@ INNER JOIN languages AS l;
 gives an error because INNER JOIN requires a specification of the key field 
 (or fields) in each table.
 */
+
+/****** USING **************/
+
+/*
+When joining tables with a common field name (e.g. countries.code = cities.code), 
+you can use USING as a shortcut. Here, you could just do USING (code)
+
+Paranthesis are important
+*/
+
+/*
+Inner join countries on the left and languages on the right USING code. Select the fields corresponding to
+
+country name AS country,
+continent name,
+language name AS language, and
+whether or not the language is official.
+*/
+
+SELECT c.name AS country, c.continent, l.name AS language, l.official
+FROM countries AS c
+INNER JOIN languages AS l
+USING (code);
