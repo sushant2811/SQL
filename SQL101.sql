@@ -204,12 +204,36 @@ Alias the result as number_of_decades */
 SELECT (MAX(release_year) - MIN(release_year)) / 10.0 AS number_of_decades
 FROM films;
 
+/******** Sorting, grouping, and joins *************/ 
 
+/* Get the names of people from the people table, sorted alphabetically */
+SELECT name 
+FROM people
+ORDER BY name
 
+/* Get the birth date and name for every person, in order of when they were born */
+SELECT birthdate, name
+FROM people
+ORDER BY birthdate;
 
+/* Get the title of films released in 2000 or 2012, in the order they were released */
+SELECT title 
+FROM films
+WHERE release_year IN (2000, 2012)
+ORDER BY release_year
 
+/* Get all details for all films except those released in 2015 and order them 
+by duration */
+SELECT * 
+FROM films
+WHERE release_year NOT IN (2015) /*the parantheses here are required*/
+ORDER BY duration;
 
-
+/* Get the title and gross earnings for movies which begin with the letter 'M' 
+and order the results alphabetically */
+SELECT title, gross
+FROM films
+WHERE title LIKE 'M%'
 
 
 
