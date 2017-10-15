@@ -33,3 +33,22 @@ SELECT c.code AS country_code, c.name, e.year, e.inflation_rate
 FROM countries AS c
 INNER JOIN economies AS e
 ON c.code = e.code;
+
+/* Now, for each country, you want to get the country name, its region, and 
+the fertility rate and unemployment rate for both 2010 and 2015 (those are the only 
+years included in the economics and population table) */
+SELECT c.code, c.name, c.region, p.year, p.fertility_rate, e.unemployment_rate, e.year
+FROM countries AS c
+INNER JOIN populations AS p
+ON c.code = p.country_code
+INNER JOIN economies AS e
+ON c.code = e.code AND p.year = e.year
+
+/*
+SELECT c.name AS country, l.name AS language
+FROM countries AS c
+INNER JOIN languages AS l;
+
+gives an error because INNER JOIN requires a specification of the key field 
+(or fields) in each table.
+*/
