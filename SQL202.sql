@@ -117,4 +117,13 @@ FROM populations AS p1
 INNER JOIN populations AS p2
 ON p1.country_code = p2.country_code AND p1.year = p2.year - 5
 
+/* CASE WHEN and THEN */
+
+SELECT name, continent, code, surface_area,
+  CASE WHEN surface_area > 2000000 THEN 'large'
+       WHEN surface_area > 350000 THEN 'medium'
+       ELSE 'small' END
+       AS geosize_group
+FROM countries
+
 
