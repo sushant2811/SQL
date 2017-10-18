@@ -126,4 +126,107 @@ SELECT name, continent, code, surface_area,
        AS geosize_group
 FROM countries
 
+/*
+Using the populations table focused only on 2015, create a new field 
+AS popsize_group to organize population size into
+
+'large' (> 50 million),
+'medium' (> 1 million), and
+'small' groups.
+Select only the country code, population size, and this new popsize_group as 
+fields
+*/
+
+SELECT country_code, size,
+    CASE WHEN size > 50000000 THEN 'large'
+         WHEN size > 1000000 THEN 'medium'
+         ELSE 'small' END
+         AS popsize_group
+FROM populations  
+WHERE year = 2015
+
+/*
+Use INTO to save the result of the previous query as pop_plus. 
+You can see an example of this in the countries_plus code in the assignment text. 
+Make sure to include a ; at the end of your WHERE clause!
+
+Then, include another query below your first query to display all the records 
+in pop_plus using SELECT * FROM pop_plus; so that you generate results and this 
+will display pop_plus in query result.
+*/
+
+SELECT country_code, size,
+    CASE WHEN size > 50000000 THEN 'large'
+         WHEN size > 1000000 THEN 'medium'
+         ELSE 'small' END
+         AS popsize_group
+INTO pop_plus         
+FROM populations  
+WHERE year = 2015;
+
+SELECT * FROM pop_plus;
+
+/*
+Keep the first query intact that creates pop_plus using INTO.
+Remove the SELECT * FROM pop_plus; code and instead write a second query to join 
+countries_plus AS c on the left with pop_plus AS p on the right matching on the 
+country code fields.
+Select country name, continent, the surface area grouping (NOT surface_area), 
+and the population grouping fields. (Four fields total.)
+Sort the data based on geosize_group, in ascending order so that large appears on top
+*/
+
+SELECT country_code, size,
+    CASE WHEN size > 50000000 THEN 'large'
+         WHEN size > 1000000 THEN 'medium'
+         ELSE 'small' END
+         AS popsize_group
+INTO pop_plus         
+FROM populations  
+WHERE year = 2015;
+
+SELECT c.name, c.continent, c.geosize_group, p.popsize_group
+FROM countries_plus AS c
+INNER JOIN pop_plus AS p
+ON c.code = p.country_code
+ORDER BY c.geosize_group DESC
+
+/* LEFT JOIN.  Keep entries in the left table which have no matching partner in 
+the left table as well*/
+
+SELECT c1.name AS city, 
+       code, 
+       c2.name AS country,
+       c2.region, c1.city_proper_pop
+FROM cities AS c1
+LEFT JOIN countries AS c2
+ON c1.country_code = c2.code
+ORDER BY code DESC
+
+/* When it is unambiguous, can use the field name w/o specifying the table name. 
+For instance in the code above we can just use 'code' in SELECT because it 
+appears in only one table*/
+
+SELECT c.name AS country, 
+       local_name, 
+       l.name AS language,
+       percent
+FROM countries AS c
+LEFT JOIN languages AS l
+ON c.code = l.code
+ORDER BY country DESC
+
+/*
+Use the AVG() function in combination with left join to 
+determine the average gross domestic product (GDP) per capita by region in 2010.
+Arrange from highest to lowest average GDP per capita
+*/
+SELECT region, AVG(gdp_percapita) AS avg_gdp
+FROM countries AS c
+LEFT JOIN economies AS e
+ON c.code = e.code
+WHERE year = 2010
+GROUP BY region
+ORDER BY avg_gdp DESC
+
 
