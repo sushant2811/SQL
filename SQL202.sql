@@ -275,12 +275,14 @@ USING (code)
 WHERE region = 'North America' OR region IS NULL
 ORDER BY region;
 
+
 SELECT name AS country, code, region, basic_unit
 FROM countries
 LEFT JOIN currencies
 USING (code)
 WHERE region = 'North America' OR region IS NULL
 ORDER BY region;
+
 
 SELECT countries.name, code, languages.name AS language
 FROM languages
@@ -289,3 +291,14 @@ FULL / LEFT/ INNER JOIN countries
 USING (code)
 WHERE countries.name LIKE 'V%' OR countries.name IS NULL
 ORDER BY countries.name;
+
+
+SELECT c1.name AS country,
+       region, l.name,
+       basic_unit, frac_unit
+FROM countries AS c1
+FULL JOIN languages AS l
+USING (code)
+FULL JOIN currencies AS c2
+USING (code)
+WHERE region LIKE 'M%esia'
