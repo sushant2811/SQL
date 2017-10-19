@@ -265,3 +265,27 @@ ON languages.code = countries.code
 RIGHT JOIN cities
 ON countries.code = cities.country_code
 ORDER BY city, language;
+
+/**  FULL JOIN **/
+
+SELECT name AS country, code, region, basic_unit
+FROM currencies
+FULL JOIN countries
+USING (code)
+WHERE region = 'North America' OR region IS NULL
+ORDER BY region;
+
+SELECT name AS country, code, region, basic_unit
+FROM countries
+LEFT JOIN currencies
+USING (code)
+WHERE region = 'North America' OR region IS NULL
+ORDER BY region;
+
+SELECT countries.name, code, languages.name AS language
+FROM languages
+FULL / LEFT/ INNER JOIN countries
+/*Look at these three different joins consecutively to understand the differemce*/
+USING (code)
+WHERE countries.name LIKE 'V%' OR countries.name IS NULL
+ORDER BY countries.name;
