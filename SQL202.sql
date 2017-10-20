@@ -339,3 +339,19 @@ ON c.code = p.country_code
 WHERE year = 2010
 ORDER BY life_exp
 LIMIT 5
+
+/* UNION */
+
+/*
+Combine these two tables into one table containing all of the fields in 
+economies2010. The economies table is also included for reference.
+Sort this resulting single table by country code and then by year, 
+both in ascending order.
+*/
+
+SELECT *
+FROM economies2010
+UNION
+SELECT *
+FROM economies2015
+ORDER BY code, year
