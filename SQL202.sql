@@ -525,3 +525,32 @@ WHERE c1.country_code IN
     SELECT country_code
     FROM populations
     );
+    
+/**   Sub-queries / Nested queries  **/    
+
+/*
+Figure out which countries had high average life expectancies 
+(at the country level) in 2015.
+Select all fields from populations with records corresponding to larger 
+than 1.15 times the average you calculated for 2015 above.
+*/
+
+SELECT * 
+FROM populations
+WHERE life_expectancy > 
+        1.15 * (SELECT AVG(life_expectancy)
+        FROM populations
+        WHERE year = '2015') AND year = '2015'
+
+/*
+Use your knowledge of subqueries in WHERE to get the urban area 
+population for only capital cities.
+*/
+
+SELECT name, country_code, urbanarea_pop
+FROM cities
+WHERE name IN 
+    (SELECT capital
+    FROM countries
+    )
+ORDER BY urbanarea_pop DESC    
