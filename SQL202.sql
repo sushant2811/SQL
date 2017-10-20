@@ -419,6 +419,7 @@ FROM countries
 EXCEPT 
 SELECT cities.name
 FROM cities
+ORDER BY capital
 
 /*
 Complete the previous query in reverse!
@@ -430,4 +431,76 @@ EXCEPT
 SELECT cities.name
 FROM cities
 ORDER BY capital
-ORDER BY capital
+
+/* SEMI - JOIN */
+
+/* use the concept of a semi-join to identify languages spoken in 
+the Middle East. */
+/*Unlike other joins, semi-join and anti-join don't have a built-in SQL syntax*/
+
+SELECT DISTINCT name
+FROM languages
+WHERE code IN 
+      (SELECT code
+       FROM countries
+       WHERE region = 'Middle East')
+ORDER BY name
+
+/*The following code gives the same answer*/
+
+SELECT DISTINCT languages.name AS language
+FROM languages
+INNER JOIN countries
+ON languages.code = countries.code
+WHERE region = 'Middle East'
+ORDER BY language;
+
+/*** ANTI-JOIN ******/
+
+/*
+Another powerful join in SQL is the anti-join. It is particularly useful in 
+identifying which records are causing an incorrect number of records to appear 
+in join queries.
+*/
+
+/* Goal: identify currencies used in Oceanian countries */
+
+/*
+Step 1: Begin by determining the number of countries in countries that are 
+listed in Oceania
+*/
+SELECT COUNT (DISTINCT name)
+FROM countries
+WHERE continent = 'Oceania'
+
+/* ans -> count: 19 */
+
+/*
+Step 2: 
+Complete an inner join with countries AS c1 on the left and currencies AS c2 
+on the right to get the different currencies used in the countries of Oceania.
+Match ON the code field in the two tables.
+Include the country code, country name, and basic_unit AS currency.
+Observe query result and make note of how many different countries are listed here.
+*/
+
+SELECT c1.code, c1.name, basic_unit AS currency
+FROM countries AS c1
+INNER JOIN currencies AS c2
+ON c1.code = c2.code
+WHERE continent = 'Oceania'
+
+-- 15 rows, TUV repeated twice, 14 different countries
+
+/*
+Note that not all countries in Oceania were listed in the resulting inner join 
+with currencies. Use an anti-join to determine which countries were not 
+included!
+*/
+
+SELECT code, name
+FROM countries
+WHERE continent = 'Oceania'
+  AND code NOT IN
+  (SELECT code
+   FROM currencies);
