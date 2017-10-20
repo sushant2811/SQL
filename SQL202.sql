@@ -302,3 +302,25 @@ USING (code)
 FULL JOIN currencies AS c2
 USING (code)
 WHERE region LIKE 'M%esia'
+
+/* CROSS JOIN */
+/*
+CROSS JOIN is a result of all combinations in the left and right table. 
+Note that CROSS JOIN does not use ON or USING (as other joins)
+*/
+SELECT c.name AS city, l.name AS language
+FROM cities AS c
+CROSS JOIN languages AS l
+WHERE c.name LIKE 'Hyder%'
+
+SELECT c.name AS city, l.name AS language
+FROM cities AS c
+INNER JOIN languages AS l
+ON c.country_code = l.code
+WHERE c.name LIKE 'Hyder%'
+
+
+SELECT c.name AS city, l.name AS language
+FROM cities AS c
+CROSS JOIN languages AS l
+WHERE c.name LIKE 'Hyder%'
