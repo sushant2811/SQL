@@ -324,3 +324,18 @@ SELECT c.name AS city, l.name AS language
 FROM cities AS c
 CROSS JOIN languages AS l
 WHERE c.name LIKE 'Hyder%'
+
+/*
+In terms of life expectancy for 2010, determine the names of the lowest 
+five countries and their regions.
+*/
+
+SELECT c.name AS country,
+       region, 
+       life_expectancy AS life_exp
+FROM countries AS c
+LEFT JOIN populations AS p
+ON c.code = p.country_code
+WHERE year = 2010
+ORDER BY life_exp
+LIMIT 5
