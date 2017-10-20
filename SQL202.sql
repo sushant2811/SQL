@@ -370,3 +370,34 @@ UNION
 SELECT currencies.code 
 FROM currencies
 ORDER BY country_code
+
+/* UNION ALL 
+Determine all combinations (include duplicates) of country code and year that 
+exist in either the economies or the populations tables.
+The result of the query should only have two columns/fields.
+*/
+
+SELECT economies.code, economies.year
+FROM economies 
+UNION ALL
+SELECT populations.country_code, populations.year
+FROM populations
+ORDER BY code, year;
+
+/* INTERSECT */
+
+SELECT economies.code, economies.year
+FROM economies
+INTERSECT
+SELECT populations.country_code, populations.year
+FROM populations
+ORDER BY code, year
+
+/* which countries also have a city with the same name as their country name? */
+
+SELECT countries.name
+FROM countries
+INTERSECT
+SELECT cities.name
+FROM cities
+
