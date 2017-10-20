@@ -577,3 +577,23 @@ LIMIT 9
 
 /*The above two codes give the same answer.  Note that the second one doesn't 
 need GROUP BY*/
+
+
+/*---   subquery inside FROM   ---*/
+
+/* determine the number of languages spoken for each country, 
+identified by the country's local name */
+
+SELECT code, COUNT (*) AS lang_num
+FROM languages
+GROUP BY code
+
+SELECT local_name, lang_num
+FROM countries, 
+    (SELECT code, COUNT (*) AS lang_num
+    FROM languages
+    GROUP BY code) AS subquery
+WHERE countries.code = subquery.code
+ORDER BY lang_num
+
+
