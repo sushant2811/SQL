@@ -596,4 +596,48 @@ FROM countries,
 WHERE countries.code = subquery.code
 ORDER BY lang_num
 
+/** Advanced nested query */
 
+/*identify which country had the maximum inflation rate 
+in each continent in 2015 (and how high it was) 
+using multiple subqueries */
+
+/*
+Step 1: Create an inner join with countries on the left and economies on the 
+right with USING.
+Retrieve the country name, continent, and inflation rate for 2015.
+*/
+
+SELECT name, continent, inflation_rate
+FROM countries
+INNER JOIN economies
+USING (code)
+WHERE year = '2015'
+
+/*
+Determine the maximum inflation rate for each continent in 2015 using the 
+previous query as a subquery called subquery in the FROM clause.
+Select the maximum inflation rate AS max_inf grouped by continent.
+*/
+
+SELECT continent, MAX(subquery.inflation_rate) AS max_inf
+FROM (SELECT name, continent, inflation_rate
+     FROM countries
+     INNER JOIN economies
+     USING (code)
+     WHERE year = '2015') AS subquery
+GROUP BY continent
+
+
+FROM countries
+INNER JOIN economies
+ON countries.code = economies.code
+WHERE year = 2015
+    AND inflation_rate IN (
+        SELECT MAX(subquery.inflation_rate) AS max_inf
+        FROM (SELECT continent, inflation_rate
+            FROM countries
+            INNER JOIN economies
+            ON countries.code = economies.code
+            WHERE year = '2015') AS subquery
+        GROUP BY continent)
