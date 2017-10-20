@@ -401,3 +401,33 @@ INTERSECT
 SELECT cities.name
 FROM cities
 
+/* EXCEPT */
+
+/*Get the names of cities in cities which are not noted as capital cities 
+in countries as a single field result.*/
+
+SELECT cities.name
+FROM cities
+EXCEPT
+SELECT capital
+FROM countries
+ORDER BY name; --- note: using cities.name does not work here
+
+
+SELECT countries.capital 
+FROM countries
+EXCEPT 
+SELECT cities.name
+FROM cities
+
+/*
+Complete the previous query in reverse!
+Determine the names of capital cities that are not listed in the cities table.
+*/
+SELECT countries.capital 
+FROM countries
+EXCEPT 
+SELECT cities.name
+FROM cities
+ORDER BY capital
+ORDER BY capital
