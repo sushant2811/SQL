@@ -504,3 +504,5 @@ WHERE continent = 'Oceania'
   AND code NOT IN
   (SELECT code
    FROM currencies);
+   
+   
