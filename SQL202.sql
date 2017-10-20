@@ -641,3 +641,64 @@ WHERE year = 2015
             ON countries.code = economies.code
             WHERE year = '2015') AS subquery
         GROUP BY continent)
+        
+/*
+Use a subquery to get 2015 economic data for countries that do not have
+
+gov_form of "Constitutional Monarchy" or
+'Republic' in their gov_form
+*/ 
+
+SELECT code, inflation_rate, unemployment_rate
+FROM economies
+WHERE year = 2015 AND code NOT IN 
+    (SELECT code
+    FROM countries
+    WHERE (gov_form = 'Constitutional Monarchy' 
+        OR gov_form LIKE '%Republic%'))
+ORDER BY inflation_rate  
+
+/*
+Get the country names and other 2015 data in the economies table and the 
+countries table for Central American countries with an official language.
+*/   
+SELECT c.name, total_investment, imports
+FROM countries AS c
+LEFT JOIN economies AS e
+ON (c.code = e.code AND 
+    c.region = 'Central America'
+    AND
+    c.code IN (
+                      SELECT code
+                      FROM languages
+                      WHERE official = true)
+                      )
+WHERE year = 2015                      
+ORDER BY name   
+
+-- calculate the average fertility rate for each region in 2015. 
+
+SELECT c.region, c.continent, AVG(p.fertility_rate) AS avg_fert_rate
+FROM countries AS c
+INNER JOIN populations AS p
+ON c.code = p.country_code
+WHERE year = 2015
+GROUP BY region, continent
+ORDER BY avg_fert_rate
+
+/*
+Determine the top 10 capital cities in Europe and the Americas in terms of a 
+calculated percentage using city_proper_pop and metroarea_pop in cities.
+*/
+
+SELECT name, country_code, city_proper_pop, metroarea_pop,
+       city_proper_pop / metroarea_pop * 100 AS city_perc
+FROM cities
+WHERE name IN 
+    (SELECT capital 
+    FROM countries
+    WHERE continent = 'Europe'
+    OR continent LIKE '%America')
+    AND metroarea_pop IS NOT NULL
+ORDER BY city_perc DESC
+LIMIT 10
