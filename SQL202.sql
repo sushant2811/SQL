@@ -349,9 +349,24 @@ Sort this resulting single table by country code and then by year,
 both in ascending order.
 */
 
+/* UNION and UNION ALL do not have the look up step that JOINS do, they 
+simply stack up the results on top of each other from one table to the next*/
+
 SELECT *
 FROM economies2010
 UNION
 SELECT *
 FROM economies2015
 ORDER BY code, year
+
+/*
+UNION can also be used to determine all occurrences of a field across 
+multiple tables.
+*/
+
+SELECT cities.country_code AS country_code
+FROM cities
+UNION
+SELECT currencies.code 
+FROM currencies
+ORDER BY country_code
