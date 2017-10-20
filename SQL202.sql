@@ -505,4 +505,23 @@ WHERE continent = 'Oceania'
   (SELECT code
    FROM currencies);
    
-   
+/*
+Identify the country codes that are included in either economies or currencies 
+but not in populations.
+Use that result to determine the names of cities in the countries that match the 
+specification in the previous instruction.
+*/  
+
+SELECT name
+FROM cities AS c1
+WHERE c1.country_code IN 
+    (
+    SELECT code
+    FROM economies
+    UNION
+    SELECT code
+    FROM currencies
+    EXCEPT
+    SELECT country_code
+    FROM populations
+    );
