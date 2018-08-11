@@ -186,3 +186,33 @@ FROM Employee as e1
 LEFT JOIN Employee as e2
 ON (e1.ManagerId = e2.Id)
 WHERE e1.Salary > e2.Salary;
+
+----------------------------------------
+
+/*
+Given a Weather table, write a SQL query to find all dates' Ids with higher temperature compared to its previous (yesterday's) dates.
+
++---------+------------------+------------------+
+| Id(INT) | RecordDate(DATE) | Temperature(INT) |
++---------+------------------+------------------+
+|       1 |       2015-01-01 |               10 |
+|       2 |       2015-01-02 |               25 |
+|       3 |       2015-01-03 |               20 |
+|       4 |       2015-01-04 |               30 |
++---------+------------------+------------------+
+For example, return the following Ids for the above Weather table:
+
++----+
+| Id |
++----+
+|  2 |
+|  4 |
++----+
+
+*/
+
+SELECT w1.Id as Id
+FROM Weather AS w1
+LEFT JOIN Weather as w2
+ON (w1.RecordDate = DATE_Add(w2.RecordDate, INTERVAL 1 DAY))
+WHERE w1.Temperature > w2.Temperature;
