@@ -111,3 +111,14 @@ FROM (SELECT Email, count(*) as dupCount
 FROM Person 
 GROUP BY Email) AS grouped
 WHERE grouped.dupCount > 1;
+
+
+SELECT Email
+FROM Person
+GROUP BY Email
+HAVING count(Email) > 1;
+
+SELECT Email
+FROM Person
+GROUP BY Email
+HAVING count(*) > 1;
