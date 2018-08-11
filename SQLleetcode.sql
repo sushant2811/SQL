@@ -216,3 +216,11 @@ FROM Weather AS w1
 LEFT JOIN Weather as w2
 ON (w1.RecordDate = DATE_Add(w2.RecordDate, INTERVAL 1 DAY))
 WHERE w1.Temperature > w2.Temperature;
+
+-- We can use the DATEDIFF function as well. Seems to be faster than DATE_ADD
+
+SELECT w1.Id as Id
+FROM Weather AS w1
+LEFT JOIN Weather as w2
+ON (DATEDIFF(w1.RecordDate, w2.RecordDate) = 1)
+WHERE w1.Temperature > w2.Temperature;
