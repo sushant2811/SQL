@@ -20,7 +20,7 @@ For example, given the above Employee table, the query should return 200 as the 
 */
 
 
-SELECT Salary AS SecondHighestSalary
+SELECT DISTINCT Salary AS SecondHighestSalary
 FROM Employee
 ORDER BY Salary
 LIMIT 1
