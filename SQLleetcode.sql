@@ -86,3 +86,28 @@ WHERE O.CustomerId is NULL;
 SELECT Name AS Customers
 FROM Customers
 WHERE Id NOT IN (SELECT CustomerId FROM Orders);
+
+----------------------------------------------
+
+/*Write a SQL query to find all duplicate emails in a table named Person.
+
++----+---------+
+| Id | Email   |
++----+---------+
+| 1  | a@b.com |
+| 2  | c@d.com |
+| 3  | a@b.com |
++----+---------+
+
++---------+
+| Email   |
++---------+
+| a@b.com |
++---------+
+*/
+
+SELECT Email 
+FROM (SELECT Email, count(*) as dupCount
+FROM Person 
+GROUP BY Email) AS grouped
+WHERE grouped.dupCount > 1;
