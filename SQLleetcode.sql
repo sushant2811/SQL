@@ -25,3 +25,22 @@ FROM Employee
 ORDER BY Salary
 LIMIT 1
 OFFSET 1;
+
+/*However we want the answer to be null if the second highest salary is not present. 
+Following are the two ways of acheiving that
+*/
+
+SELECT IFNULL(
+(SELECT DISTINCT Salary 
+    FROM Employee
+    ORDER BY Salary DESC
+    LIMIT 1 
+    OFFSET 1)
+, NULL) AS SecondHighestSalary;
+
+SELECT 
+(SELECT DISTINCT Salary
+FROM Employee
+Order By Salary DESC
+LIMIT 1 OFFSET 1) 
+AS SecondHighestSalary
