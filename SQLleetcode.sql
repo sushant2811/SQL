@@ -438,3 +438,15 @@ FROM Employee AS e
 INNER JOIN Department AS d
 ON (e.DepartmentId = d.Id)) AS j) AS k
 WHERE Rank = 1;
+
+/*The following solution works in MySQL, but not in MS-SQL*/
+
+SELECT d.Name AS Department, e.Name AS Employee, Salary
+FROM Employee AS e
+INNER JOIN Department AS d
+ON (e.DepartmentId = d.Id)
+WHERE 
+(d.Id, Salary) IN 
+(SELECT DepartmentId, MAX(Salary) AS Salary
+FROM Employee
+GROUP BY DepartmentId);
