@@ -388,3 +388,12 @@ Logs AS l2,
 Logs AS l3
 WHERE l2.id = l1.id + 1 AND l3.id = l2.id + 1
 AND l1.Num = l2.Num and l1.Num = l3.Num;
+
+SELECT DISTINCT l3.Num AS ConsecutiveNums  
+FROM
+(SELECT l2.id as l12_id, l2.Num as l12_Num
+FROM Logs AS l1
+INNER JOIN Logs AS l2
+ON (l2.id = l1.id + 1 AND l1.Num = l2.Num)) AS l12
+INNER JOIN Logs AS l3
+ON (l3.id = l12_id + 1 AND l3.Num = l12_Num)
