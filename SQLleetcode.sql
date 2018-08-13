@@ -439,6 +439,16 @@ INNER JOIN Department AS d
 ON (e.DepartmentId = d.Id)) AS j) AS k
 WHERE Rank = 1;
 
+SELECT Department, Employee, Salary
+FROM
+(SELECT d.Name AS Department, 
+e.Name AS Employee, Salary, 
+RANK() OVER (PARTITION BY d.Name ORDER BY Salary DESC) AS Rank
+FROM Employee AS e
+INNER JOIN Department AS d
+ON (e.DepartmentId = d.Id)) AS j
+WHERE Rank = 1;
+
 /*The following solution works in MySQL, but not in MS-SQL*/
 
 SELECT d.Name AS Department, e.Name AS Employee, Salary
@@ -450,3 +460,5 @@ WHERE
 (SELECT DepartmentId, MAX(Salary) AS Salary
 FROM Employee
 GROUP BY DepartmentId);
+
+
