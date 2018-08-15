@@ -494,3 +494,15 @@ SET @M = @N-1;
         OFFSET @M ROWS FETCH NEXT 1 ROWS ONLY
     );
 END
+
+-- MySQL solution
+
+CREATE FUNCTION getNthHighestSalary(N INT) RETURNS INT
+BEGIN
+  DECLARE M INT;
+    SET M = N-1;
+    RETURN (
+        /* Write your T-SQL query statement below. */
+        SELECT DISTINCT Salary FROM Employee ORDER BY Salary DESC LIMIT 1 OFFSET M
+    );
+END
