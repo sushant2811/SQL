@@ -474,6 +474,17 @@ WHERE
 FROM Employee
 GROUP BY DepartmentId);
 
+SELECT
+Department, Employee.Name AS Employee, Salary
+FROM
+(SELECT d.Name AS Department, d.Id AS d_id, max(Salary) AS max_salary
+FROM Employee AS e
+LEFT JOIN Department AS d
+ON (e.DepartmentId = d.Id)
+GROUP BY Department) AS Joined
+INNER JOIN Employee
+ON (Joined.d_id = Employee.DepartmentId AND Joined.max_salary = Employee.Salary)
+
 ---------------------------------------
 /*
 Write a SQL query to get the nth highest salary from the Employee table.
