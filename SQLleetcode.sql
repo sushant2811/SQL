@@ -398,6 +398,19 @@ ON (l2.id = l1.id + 1 AND l1.Num = l2.Num)) AS l12
 INNER JOIN Logs AS l3
 ON (l3.id = l12_id + 1 AND l3.Num = l12_Num)
 
+--- moving the number equality condition from ON to where clause works as well
+
+SELECT DISTINCT l3.Num AS ConsecutiveNums
+FROM
+(SELECT l2.id AS l12_id, l2.Num AS l12_Num
+FROM Logs l1
+INNER JOIN Logs l2
+ON (l2.id = l1.id + 1)
+WHERE l2.Num = l1.Num) AS l12
+INNER JOIN Logs l3
+ON (l3.id = l12_id + 1)
+WHERE l3.Num = l12_Num
+
 /*
 The Employee table holds all employees. Every employee has an Id, a salary, and there is also a column for the department Id.
 
