@@ -547,3 +547,22 @@ FROM seat,
     (SELECT COUNT(*) AS counts 
     FROM seat) AS seat_counts
 ORDER BY id
+
+/*
+When we xor a number with 1, we change it from odd to even and around. 
+0 -> 1
+1 -> 0
+2 -> 3
+3 -> 2
+4 -> 5
+5 -> 4
+In order to match the order we do the +1, -1 gymnastics. 
+The COALESCE() fn in mySQL returns the first non-null expression in the list.
+SELECT COALESCE(NULL, NULL, 1, 2, NULL) gives NULL
+*/
+
+SELECT s1.id AS id, COALESCE(s2.student, s1.student) AS student
+FROM seat AS s1
+LEFT JOIN seat AS s2
+ON ((s1.id+1)^1 - 1 = s2.id)
+ORDER BY s1.id
