@@ -861,4 +861,15 @@ from order_items
 GROUP BY 1
 ORDER BY 2 DESC;
 
+/*Calculating reorder rate*/ 
+
+SELECT name, 
+ROUND(1.0 * COUNT(DISTINCT order_id) / COUNT(DISTINCT delivered_to), 2)
+AS reorder_rate
+FROM orders AS o1
+JOIN order_items AS o2
+ON (o1.id = o2.order_id)
+GROUP BY 1
+ORDER BY 2 DESC;
+
 --------------------------------------------------
