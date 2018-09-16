@@ -785,3 +785,28 @@ ON (g1.user_id = g2.user_id)
 AND DATE(g1.created_at) = DATE(DATETIME(g2.created_at, '-1 day'))
 GROUP BY 1
 ORDER BY 1
+
+/*
+Average revenue per user (ARPU) using the above datasets. We will be using the CTE (common table exception) also known as the with clause. 
+*/
+
+WITH daily_revenue as (
+  select
+    date(created_at) as dt,
+    round(sum(price), 2) as rev
+  from purchases
+  where refunded_at is null
+  group by 1
+),
+daily_players as (
+  select
+    date(created_at) as dt,
+    COUNT(DISTINCT user_id) as players
+  from gameplays
+  group by 1
+)
+select
+  daily_revenue.dt,
+  ROUND(daily_revenue.rev / daily_players.players, 2) AS ARPU
+from daily_revenue
+  join daily_players using (dt);
