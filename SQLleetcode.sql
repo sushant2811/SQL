@@ -810,3 +810,31 @@ select
   ROUND(daily_revenue.rev / daily_players.players, 2) AS ARPU
 from daily_revenue
   join daily_players using (dt);
+
+
+-------------------------------------------------------------------------------------------
+
+/*
+Database Schema
+orders 4999 rows
+id	int
+ordered_at	text
+delivered_at	text
+delivered_to	int
+
+order_items 20000 rows
+id	int
+order_id	int
+name	text
+amount_paid	real
+
+Getting percentage revenue that each item represents
+*/
+
+SELECT name,
+ROUND(SUM(amount_paid) * 100/ 
+      (SELECT SUM(amount_paid) FROM order_items) , 2) 
+      AS pct
+FROM order_items
+GROUP BY 1
+ORDER BY 2 DESC;
