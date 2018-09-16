@@ -837,4 +837,28 @@ ROUND(SUM(amount_paid) * 100/
       AS pct
 FROM order_items
 GROUP BY 1
+ORDER BY 2 DESC; 
+
+/*
+Doing group by with expressions. Calculating percentages for each categories
+*/
+
+select
+  CASE name
+    when 'kale-smoothie'    then 'smoothie'
+    when 'banana-smoothie'  then 'smoothie'
+    when 'orange-juice'     then 'drink'
+    when 'soda'             then 'drink'
+    when 'blt'              then 'sandwich'
+    when 'grilled-cheese'   then 'sandwich'
+    when 'tikka-masala'     then 'dinner'
+    when 'chicken-parm'     then 'dinner'
+     else 'other'
+  end as category, 
+  ROUND(1.0 * SUM(amount_paid) / 
+        (SELECT SUM(amount_paid) FROM order_items) * 100, 2) AS pct
+from order_items
+GROUP BY 1
 ORDER BY 2 DESC;
+
+--------------------------------------------------
