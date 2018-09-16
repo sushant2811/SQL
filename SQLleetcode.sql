@@ -749,3 +749,39 @@ ON (t.Client_id = u.Users_Id)
 WHERE u.Banned = "No"
 AND Request_at BETWEEN '2013-10-01' AND '2013-10-03'
 GROUP BY Request_at
+
+---------------------------------------------------------------------------------------------------
+
+/*
+
+Ref.: codeacademy 
+
+Database Schema
+purchases 2000 rows
+id	int
+user_id	int
+price	real
+refunded_at	text
+created_at	text
+
+gameplays 14000 rows
+id	int
+user_id	int
+created_at	text
+platform	text
+
+Retention can be defined many different ways, but we'll stick to the most basic definition. For all players on Day N, we'll consider them retained if they came back to play again on Day N+1.
+
+Let's calculate 1 day retention
+
+*/
+
+SELECT DATE(g1.created_at) AS dt,
+ROUND(COUNT(DISTINCT g2.user_id) * 100/ 
+      COUNT(DISTINCT g1.user_id), 2) AS retention
+FROM gameplays AS g1
+LEFT JOIN gameplays AS g2
+ON (g1.user_id = g2.user_id)
+AND DATE(g1.created_at) = DATE(DATETIME(g2.created_at, '-1 day'))
+GROUP BY 1
+ORDER BY 1
