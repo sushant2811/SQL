@@ -873,3 +873,14 @@ GROUP BY 1
 ORDER BY 2 DESC;
 
 --------------------------------------------------
+
+/*
+Using the same pattern, find both the total flight distance and the flight distance by origin for Delta 
+*/
+
+SELECT 
+origin, SUM(distance) AS total_flight_distance, 
+SUM(CASE WHEN carrier = 'DL' THEN distance ELSE 0 END) 
+AS total_delta_flight_distance
+FROM flights
+GROUP BY origin;
