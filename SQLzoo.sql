@@ -177,3 +177,120 @@ SELECT guest_id, COUNT(booking_id), sum(nights)
 FROM booking
 WHERE guest_id = 1185 OR guest_id = 1270
 GROUP BY 1
+
+/*
+6.
+Ruth Cadbury. Show the total amount payable by guest Ruth Cadbury for her room bookings. You should JOIN to the rate table using room_type_requested and occupants.*/
+
+SELECT sum(nights * amount)
+FROM booking
+JOIN rate 
+ON (room_type_requested = room_type AND occupants = occupancy)
+WHERE guest_id = (SELECT id FROM guest WHERE first_name='Ruth' AND last_name='Cadbury')
+
+SELECT sum(nights * amount)
+FROM booking
+JOIN rate 
+ON (room_type_requested = room_type AND occupants = occupancy AND guest_id = (SELECT id FROM guest WHERE first_name='Ruth' AND last_name='Cadbury'))
+
+/*7.Including Extras. Calculate the total bill for booking 5128 including extra.
+
+Note that the answer shown is inaccurate. 
+*/
+
+SELECT amount + extra_amount AS total_amount
+FROM
+(SELECT booking_id, sum(nights * amount) AS amount
+FROM booking
+JOIN rate
+ON (room_type_requested = room_type AND occupants = occupancy)
+WHERE booking_id = 5128
+GROUP BY 1) AS a
+JOIN (SELECT booking_id, sum(amount) AS extra_amount
+FROM extra 
+WHERE booking_id=5128
+GROUP BY 1) AS b
+using (booking_id)
+
+/*
+8. Edinburgh Residents. For every guest who has the word “Edinburgh” in their address show the total number of nights booked. Be sure to include 0 for those guests who have never had a booking. Show last name, first name, address and number of nights. Order by last name then first name.*/
+
+SELECT last_name, first_name, address, IFNULL(sum(nights), 0) AS nights
+FROM guest 
+LEFT JOIN booking 
+ON booking.guest_id = guest.id
+WHERE address LIKE '%Edinburgh%'
+GROUP BY 1, 2, 3 
+ORDER BY 1, 2
+
+SELECT last_name, first_name, address, COALESCE(sum(nights), 0) AS nights
+FROM guest 
+LEFT JOIN booking 
+ON booking.guest_id = guest.id
+WHERE address LIKE '%Edinburgh%'
+GROUP BY 1, 2, 3 
+ORDER BY 1, 2
+
+SELECT last_name, first_name, address, 
+CASE WHEN sum(nights) IS NULL THEN 0
+ELSE sum(nights) END AS nights
+FROM guest 
+LEFT JOIN booking 
+ON booking.guest_id = guest.id
+WHERE address LIKE '%Edinburgh%'
+GROUP BY 1, 2, 3 
+ORDER BY 1, 2
+
+/*
+9.
+Show the number of people arriving. For each day of the week beginning 2016-11-25 show the number of people who are arriving that day.*/
+
+SELECT booking_date, COUNT(booking_id)
+FROM booking
+WHERE booking_date BETWEEN '2016-11-25' AND '2016-12-01'
+GROUP BY 1
+
+/*The above query gives the answer on the website, but I believe it only gives the number of people who made booking for the given day. 
+To get the total number of people arriving, we can use the occupants as a proxy*/
+
+SELECT booking_date, sum(occupants)
+FROM booking
+WHERE booking_date BETWEEN '2016-11-25' AND '2016-12-01'
+GROUP BY 1
+
+/*
+How many guests? Show the number of guests in the hotel on the night of 2016-11-21. Include all those who checked in that day or before but not those who have check out on that day or before.*/
+
+SELECT sum(occupants)
+FROM booking
+WHERE booking_id IN
+(SELECT DISTINCT booking_id
+FROM booking
+WHERE booking_date <= '2016-11-21' AND DATE_ADD(booking_date, INTERVAL 1*nights DAY) > '2016-11-21')
+
+SELECT sum(occupants)
+FROM booking
+WHERE booking_id IN
+(SELECT DISTINCT booking_id
+FROM booking
+WHERE booking_date <= '2016-11-21' AND DATEDIFF('2016-11-21', booking_date) < nights) 
+
+/*
+The following query works as well because booking_id is the primary key*/
+
+SELECT
+	sum(occupants)
+FROM
+	booking
+WHERE
+	booking_date <= '2016-11-21'
+	AND DATE_ADD(booking_date, INTERVAL nights DAY) > '2016-11-21'
+
+/*By the same logic we can drop distinct in the previous queries*/
+
+SELECT sum(occupants)
+FROM booking
+WHERE booking_id IN
+(SELECT booking_id
+FROM booking
+WHERE booking_date <= '2016-11-21' AND DATEDIFF('2016-11-21', booking_date) < nights) 
