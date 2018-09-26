@@ -130,3 +130,33 @@ WHERE First_name = 'Harry'
 ORDER BY Call_date DESC LIMIT 1) AS j
 ON (j.Taken_by = Staff.Staff_code)
 
+
+-------------------------------------------------------------------
+-----------Guest House problem--------------
+------------------------------------------
+
+/*1.
+Guest 1183. Give the booking_date and the number of nights for guest 1183.*/
+
+SELECT booking_date, nights
+FROM booking 
+WHERE guest_id = 1183
+
+/*2. When do they get here? List the arrival time and the first and last names for all guests due to arrive on 2016-11-05, order the output by time of arrival.*/
+
+SELECT arrival_time, first_name, last_name
+FROM booking 
+INNER JOIN guest
+ON booking.guest_id = guest.id
+WHERE booking_date = '2016-11-05'
+ORDER BY 1
+
+/*3. Look up daily rates. Give the daily rate that should be paid for bookings with ids 5152, 5165, 5154 and 5295. Include booking id, room type, number of occupants and the amount.*/
+
+SELECT booking_id, room_type_requested, occupants, amount
+FROM booking
+JOIN rate 
+ON (room_type_requested = room_type AND occupants = occupancy)
+WHERE booking_id IN (5152, 5165, 5154, 5295)
+
+
