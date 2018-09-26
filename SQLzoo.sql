@@ -159,4 +159,21 @@ JOIN rate
 ON (room_type_requested = room_type AND occupants = occupancy)
 WHERE booking_id IN (5152, 5165, 5154, 5295)
 
+/*
+4.
+Who’s in 101? Find who is staying in room 101 on 2016-12-03, include first name, last name and address.
+*/
 
+SELECT first_name, last_name, address
+FROM booking
+JOIN guest
+ON guest_id = id
+WHERE room_no = 101 AND booking_date='2016-12-03'
+
+/*
+5. How many bookings, how many nights? For guests 1185 and 1270 show the number of bookings made and the total number nights. Your output should include the guest id and the total number of bookings and the total number of nights.*/
+
+SELECT guest_id, COUNT(booking_id), sum(nights)
+FROM booking
+WHERE guest_id = 1185 OR guest_id = 1270
+GROUP BY 1
